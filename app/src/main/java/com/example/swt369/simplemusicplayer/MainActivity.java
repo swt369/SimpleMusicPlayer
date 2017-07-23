@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         ScrollView scrollView= (ScrollView)findViewById(R.id.scroll_view);
         textView = new TextView(this);
-        textView.setTextColor(Color.WHITE);
+        textView.setTextColor(Color.BLACK);
         textView.setGravity(Gravity.CENTER);
         scrollView.addView(textView);
 
