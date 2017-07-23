@@ -1,0 +1,7 @@
+Ctrl+H 查看继承关系
+Ctrl+P 查看参数
+Ctrl+Q 查看文档
+Ctrl+Alt+Space 补全
+Alt+Enter 添加未实现的方法 添加字符串至string
+Alt+Insert 添加getter与setter、constructor
+Alt+Q 转到当前所在声明

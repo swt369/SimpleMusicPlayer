@@ -1,0 +1,96 @@
+阻止联网下载：安装bin目录下idea.properties文件最后加一行disable.android.first.run=true
+
+使用AppTheme:android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+单位：TypedValue,内置转换函数
+
+添加阴影效果要在View类OnCreate中加上setLayerType(LAYER_TYPE_SOFTWARE, null);
+
+菜单设置单选menu.[getItem(0).getSubMenu().]setGroupCheckable(0,true,true);
+
+setXXX方法：清空之前操作并更改（包括其他类型方法）
+postXXX方法：后方追加操作，后进后出
+preXXX方法：前方追加操作，后进先出
+
+android6.0及以上使用权限时需要动态申请。方法如下：
+（1）判断版本号并申请权限
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            int i = ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE);
+            if(i != PackageManager.PERMISSION_GRANTED){
+                Log.i("permission","false");
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},CODE_REQUEST(自定义));
+            }
+        }
+（2）判断权限是否获取
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 321){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Log.i("permission","granted");
+            }
+        }else{
+            super.onRequestPermissionsResult(requestCode, permissions,
+                    grantResults);
+        }
+    }
+
+读取动画资源：AnimationUtils.loadAnimation(this,R.anim.translate_left);
+
+音频池（SoundPool）SDK版本>=21时需使用SoundPool.Builder
+示例：
+        SoundPool.Builder spb = new SoundPool.Builder();
+        spb.setMaxStreams(10);
+        AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+        attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);
+        spb.setAudioAttributes(attrBuilder.build());
+        soundPool = spb.build();
+	HashMap<Integer,Integer> soundMap = new HashMap<>();
+        soundMap.put(1,soundPool.load(this,R.raw.chimes,1));
+
+获取媒体音量控制：
+        final AudioManager am = (AudioManager)MainActivity.this.getSystemService(Context.AUDIO_SERVICE);
+        MainActivity.this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+View类非线程安全，在非创建线程中操作View需通过传递Handler发信息至创建线程中进行处理。
+
+初始化Handler对象时：使用Callback接口，防止内存泄露
+        handler = new Handler(new Handler.Callback(){
+            @Override
+            public boolean handleMessage(Message msg) {
+                if(msg.what == Codes.CODE_INVALIDATE){
+                    gameView.nextFrame();
+                }
+                return false;
+            }
+        });
+
+v1和v2的签名使用
+只勾选v1签名并不会影响什么，但是在7.0上不会使用更安全的验证方式
+只勾选V2签名7.0以下会直接安装完显示未安装，7.0以上则使用了V2的方式验证
+同时勾选V1和V2则所有机型都没问题
+
+Thread.sleep与thread.interrupt()同时使用时，应在sleep()方法中捕捉InterruptedException 异常并使用Thread.currentThread.interrupt()方法保证线程关闭。
+
+暂停线程可通过设置isPause标志实现（重写线程类或Runnable接口）
+
+构造方法可使用递归方式解决不同输入参数问题，使代码更加简洁。
+
+        //按字典序排序
+        Collections.sort(fileproperties, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> o1, Map<String, String> o2) {
+                String o1_value = o1.get("name");
+                String o2_value = o2.get("name");
+                return o1_value.compareTo(o2_value);
+            }
+});
+
+//遍历Map
+		Iterator entries = mp.entrySet().iterator();
+		while(entries.hasNext()){
+			Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) entries.next();
+			System.out.printf("%02d %s\n",entry.getKey(),entry.getValue());
+		}
+
+获取程序缓存地址：context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS（可改）)
+
+线程池：Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())

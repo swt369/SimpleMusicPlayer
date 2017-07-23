@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="50"/>
+
+    <Button
+        android:text="向前"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/button_pre"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="12.5"/>
+
+    <Button
+        android:text="暂停"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/button_pause"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="12.5"/>
+
+    <Button
+        android:text="播放"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/button_play"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="12.5"/>
+
+    <Button
+        android:text="向后"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/button_next"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="12.5"/>
+
+</LinearLayout>
