@@ -1,6 +1,8 @@
 package com.example.swt369.simplemusicplayer;
 
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,13 +10,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Random;
 
 public class MyService extends Service {
+    private static int CODE_NOTIFICATION_PRE = 0x121;
+    private static int CODE_NOTIFICATION_PAUSE = 0x122;
+    private static int CODE_NOTIFICATION_PLAY = 0x123;
+    private static int CODE_NOTIFICATION_NEXT = 0x124;
+    private static int NOTIFICATION_ID = 1;
     static String ACTION_PRE = "pre";
     static String ACTION_PAUSE = "pause";
     static String ACTION_PLAY = "play";
@@ -24,6 +33,9 @@ public class MyService extends Service {
     private MediaPlayer player = new MediaPlayer();
     private MyBinder binder = new MyBinder();
     private Random random = new Random();
+    private NotificationManager manager;
+    private Notification.Builder builder;
+    private RemoteViews remoteViews;
     private boolean prepared = false;
 
     @Override
@@ -81,6 +93,8 @@ public class MyService extends Service {
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
 
         registerReceiver(receiver,intentFilter);
+
+        initializeNotification();
     }
 
     private void nextSong(){
@@ -103,12 +117,64 @@ public class MyService extends Service {
         return binder;
     }
 
+    private void initializeNotification(){
+        manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        builder = new Notification.Builder(this);
+
+        remoteViews = new RemoteViews(getPackageName(),R.layout.notification_layout);
+
+        Intent intentPre = new Intent();
+        intentPre.setAction(ACTION_PRE);
+        PendingIntent pendingIntentPre = PendingIntent.getBroadcast(
+                MyService.this,
+                CODE_NOTIFICATION_PRE,
+                intentPre,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.notification_button_pre,pendingIntentPre);
+
+        Intent intentPause = new Intent();
+        intentPause.setAction(ACTION_PAUSE);
+        PendingIntent pendingIntentPause = PendingIntent.getBroadcast(
+                MyService.this,
+                CODE_NOTIFICATION_PAUSE,
+                intentPause,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        remoteViews.setOnClickPendingIntent(R.id.notification_button_pause,pendingIntentPause);
+
+        Intent intentPlay = new Intent();
+        intentPlay.setAction(ACTION_PLAY);
+        PendingIntent pendingIntentPlay = PendingIntent.getBroadcast(
+                MyService.this,
+                CODE_NOTIFICATION_PLAY,
+                intentPlay,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        remoteViews.setOnClickPendingIntent(R.id.notification_button_play,pendingIntentPlay);
+
+        Intent intentNext = new Intent();
+        intentNext.setAction(ACTION_NEXT);
+        PendingIntent pendingIntentNext = PendingIntent.getBroadcast(
+                MyService.this,
+                CODE_NOTIFICATION_NEXT,
+                intentNext,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        remoteViews.setOnClickPendingIntent(R.id.notification_button_next,pendingIntentNext);
+
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setCustomContentView(remoteViews);
+        }else {
+            builder.setContent(remoteViews);
+        }
+    }
+
     private void createNotification(){
-        RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_layout);
-
-
-
-        Notification.Builder builder = new Notification.Builder(this);
+        remoteViews.setTextViewText(R.id.notification_text_view,application.getCurSongName());
+        Notification notification = builder.build();
+        notification.flags = Notification.FLAG_NO_CLEAR;
+        manager.notify(NOTIFICATION_ID,builder.build());
     }
 
     class MyBinder extends Binder{
@@ -123,16 +189,17 @@ public class MyService extends Service {
                 player.stop();
             }
             prepared = false;
+            application.curPos = pos;
             try {
                 player.reset();
-                player.setDataSource(application.songPaths.get(pos));
+                player.setDataSource(application.getCurSongPath());
                 player.prepare();
                 prepared = true;
                 player.start();
                 if(needToPush){
                     application.listened.push(application.curPos);
                 }
-                application.curPos = pos;
+                createNotification();
             } catch (IOException e) {
                 e.printStackTrace();
             }

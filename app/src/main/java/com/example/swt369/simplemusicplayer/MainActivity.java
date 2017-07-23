@@ -91,6 +91,13 @@ public class MainActivity extends AppCompatActivity {
         bindService(intent,connection,BIND_AUTO_CREATE);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unbindService(connection);
+    }
+
     private void addSongsToListView() {
         curlen = application.songNames.size();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.list_view_item_layout,application.songNames);

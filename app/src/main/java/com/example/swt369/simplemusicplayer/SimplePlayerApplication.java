@@ -33,6 +33,14 @@ public final class SimplePlayerApplication extends Application {
         }
     }
 
+    String getCurSongName(){
+        return songNames.get(curPos);
+    }
+
+    String getCurSongPath(){
+        return songPaths.get(curPos);
+    }
+
     void addNewSong(File file){
         if(file.exists()){
             songPaths.add(file.getAbsolutePath());

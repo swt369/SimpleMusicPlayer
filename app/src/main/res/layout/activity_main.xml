@@ -25,43 +25,47 @@
             android:id="@+id/scroll_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="50"
+            android:layout_weight="40"
             android:gravity="center"/>
 
         <Button
-            android:text="向前"
+            android:text="@string/pre"
             android:textSize="12sp"
             android:gravity="center"
             android:id="@+id/button_pre"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="12.5"/>
+            android:layout_weight="15"
+            android:maxLines="1" />
 
         <Button
-            android:text="暂停"
+            android:text="@string/pause"
             android:textSize="12sp"
             android:gravity="center"
             android:id="@+id/button_pause"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="12.5"/>
+            android:layout_weight="15"
+            android:maxLines="1" />
 
         <Button
-            android:text="播放"
+            android:text="@string/play"
             android:textSize="12sp"
             android:gravity="center"
             android:id="@+id/button_play"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="12.5"/>
+            android:layout_weight="15"
+            android:maxLines="1" />
 
         <Button
-            android:text="向后"
+            android:text="@string/next"
             android:textSize="12sp"
             android:gravity="center"
             android:id="@+id/button_next"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="12.5"/>
+            android:layout_weight="15"
+            android:maxLines="1" />
     </LinearLayout>
 </LinearLayout>

@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="horizontal">
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:background="@drawable/bg">
 
     <TextView
-        android:id="@+id/text_view"
+        android:id="@+id/notification_text_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="50"/>
-
-    <Button
-        android:text="向前"
+        android:layout_weight="40"
         android:textSize="12sp"
         android:gravity="center"
-        android:id="@+id/button_pre"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="12.5"/>
+        android:maxLines="5"/>
 
     <Button
-        android:text="暂停"
+        android:text="@string/pre"
         android:textSize="12sp"
         android:gravity="center"
-        android:id="@+id/button_pause"
+        android:id="@+id/notification_button_pre"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="12.5"/>
+        android:layout_weight="15"/>
 
     <Button
-        android:text="播放"
+        android:text="@string/pause"
         android:textSize="12sp"
         android:gravity="center"
-        android:id="@+id/button_play"
+        android:id="@+id/notification_button_pause"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="12.5"/>
+        android:layout_weight="15"/>
 
     <Button
-        android:text="向后"
+        android:text="@string/play"
         android:textSize="12sp"
         android:gravity="center"
-        android:id="@+id/button_next"
+        android:id="@+id/notification_button_play"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="12.5"/>
+        android:layout_weight="15"/>
+
+    <Button
+        android:text="@string/next"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/notification_button_next"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="15"/>
 
 </LinearLayout>
