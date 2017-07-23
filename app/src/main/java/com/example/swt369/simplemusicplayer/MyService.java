@@ -28,6 +28,7 @@ public class MyService extends Service {
     static String ACTION_PAUSE = "pause";
     static String ACTION_PLAY = "play";
     static String ACTION_NEXT = "next";
+    static String ACTION_UPDATE_TEXTVIEW = "textview";
     private BroadcastReceiver receiver;
     private SimplePlayerApplication application;
     private MediaPlayer player = new MediaPlayer();
@@ -177,6 +178,11 @@ public class MyService extends Service {
         manager.notify(NOTIFICATION_ID,builder.build());
     }
 
+    private void sendBroadcastForUpdateTextView(){
+        Intent intent = new Intent(ACTION_UPDATE_TEXTVIEW);
+        sendBroadcast(intent);
+    }
+
     class MyBinder extends Binder{
         void playSong(int pos){
             playSong(pos,true);
@@ -199,6 +205,7 @@ public class MyService extends Service {
                 if(needToPush){
                     application.listened.push(application.curPos);
                 }
+                sendBroadcastForUpdateTextView();
                 createNotification();
             } catch (IOException e) {
                 e.printStackTrace();
