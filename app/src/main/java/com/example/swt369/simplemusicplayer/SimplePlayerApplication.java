@@ -6,6 +6,7 @@ import android.os.Environment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by swt369 on 2017/7/23.
@@ -15,6 +16,8 @@ public final class SimplePlayerApplication extends Application {
     File destDir;
     ArrayList<String> songPaths;
     ArrayList<String> songNames;
+    Stack<Integer> listened;
+    int curPos;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -23,6 +26,7 @@ public final class SimplePlayerApplication extends Application {
 
         songPaths = new ArrayList<>();
         songNames = new ArrayList<>();
+        listened = new Stack<>();
         File[] downloadSongs = destDir.listFiles();
         for(File file : downloadSongs){
             addNewSong(file);

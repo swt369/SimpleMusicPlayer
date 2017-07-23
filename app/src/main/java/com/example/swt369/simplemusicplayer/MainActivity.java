@@ -5,17 +5,23 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private SimplePlayerApplication application;
     private ListView listView;
+    private TextView textView;
     private int curlen;
     private boolean mBound = false;
     private MyService.MyBinder binder;
@@ -30,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         buttonPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent();
+                intent.setAction(MyService.ACTION_PRE);
+                sendBroadcast(intent);
             }
         });
 
@@ -58,17 +66,24 @@ public class MainActivity extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent();
+                intent.setAction(MyService.ACTION_NEXT);
+                sendBroadcast(intent);
             }
         });
 
-        TextView textView = (TextView)findViewById(R.id.text_view);
+        ScrollView scrollView= (ScrollView)findViewById(R.id.scroll_view);
+        textView = new TextView(this);
+        textView.setGravity(Gravity.CENTER);
+        scrollView.addView(textView);
+
         listView = (ListView)findViewById(R.id.list_view);
         addSongsToListView();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                binder.playSong(application.songPaths.get(position));
+                textView.setText(application.songNames.get(position));
+                binder.playSong(position);
             }
         });
 
