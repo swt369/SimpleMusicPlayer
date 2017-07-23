@@ -163,7 +163,7 @@ public class MyService extends Service {
         );
         remoteViews.setOnClickPendingIntent(R.id.notification_button_next,pendingIntentNext);
 
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.mipmap.icon);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             builder.setCustomContentView(remoteViews);
         }else {

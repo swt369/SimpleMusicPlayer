@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         ScrollView scrollView= (ScrollView)findViewById(R.id.scroll_view);
         textView = new TextView(this);
+        textView.setTextColor(Color.WHITE);
         textView.setGravity(Gravity.CENTER);
         scrollView.addView(textView);
 
